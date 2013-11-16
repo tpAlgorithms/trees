@@ -7,6 +7,11 @@ struct node_t {
   node_t *right;
 };
 
+struct tree_t {
+  node_t *root;
+};
+
+
 /*
 node_t* tree_find(node_t* node, int data) {
   node_t *current_node = node;
@@ -36,7 +41,7 @@ node_t* tree_find_impl(node_t* node, int data) {
         return current_node;
       }
     } else if (current_node->data < data) {
-      if (current_node->right != NULL)
+      if (current_node->right != NULL) {
         current_node = current_node->right;
       } else {
         return current_node;
@@ -49,8 +54,8 @@ node_t* tree_find_impl(node_t* node, int data) {
   return NULL;
 }
 
-node_t* tree_find(node_t* node, int data) {
-  node = tree_find_impl(node, data);
+node_t* tree_find(tree_t &tree, int data) {
+  node_t *node = tree_find_impl(tree.root, data);
   if (node != NULL && node->data == data) {
     return node;
   }
@@ -63,10 +68,11 @@ void init_node(node_t &node, int data) {
   node.right = NULL;
 }
 
-void tree_add(node_t* node, int data) {
-  node = tree_find_impl(node, data);
+void tree_add(tree_t &tree, int data) {
+  node_t *node = tree_find_impl(tree.root, data);
   if (node == NULL) {
-    // error
+    tree.root = new node_t;
+    init_node(*tree.root, data);
   } else if (node->data >= data) {
     node->left = new node_t;
     init_node(*node->left, data);
@@ -74,8 +80,6 @@ void tree_add(node_t* node, int data) {
     node->right = new node_t;
     init_node(*node->right, data);
   }
-  
-  return NULL;
 }
 
 template <typename func_t>
@@ -83,9 +87,9 @@ void tree_traverse(node_t *node, func_t foo) {
   if (node == NULL) return;
 
   // inorder
-  traverse(node->left);
+  tree_traverse(node->left, foo);
   foo(node->data);
-  traverse(node->right);
+  tree_traverse(node->right, foo);
 /*
   // preorder
   foo(node->data);
