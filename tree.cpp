@@ -11,6 +11,9 @@ struct tree_t {
   node_t *root;
 };
 
+void init_tree(tree_t &tree) {
+  tree.root = NULL;
+}
 
 /*
 node_t* tree_find(node_t* node, int data) {
@@ -82,30 +85,19 @@ void tree_add(tree_t &tree, int data) {
   }
 }
 
-template <typename func_t>
-void tree_traverse(node_t *node, func_t foo) {
-  if (node == NULL) return;
-
-  // inorder
-  tree_traverse(node->left, foo);
-  foo(node->data);
-  tree_traverse(node->right, foo);
-/*
-  // preorder
-  foo(node->data);
-  traverse(node->left);
-  traverse(node->right);
-
-  // postorder
-  traverse(node->left);
-  foo(node->data);
-  traverse(node->right);
-*/
-}
-
 int main() {
+  int count;
+  std::cin >> count;
 
+  tree_t t;
+  init_tree(t);
+  for (int i = 0; i < count; ++i) {
+    int data;
+    std::cin >> data;
+    tree_add(t, data);
+  }
 
+  return 0;
 };
 
 

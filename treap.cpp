@@ -1,6 +1,7 @@
 // by Dmitry Korepanov
 
-﻿#include <iostream>
+#include <cstdio>
+#include <iostream>
 
 struct CTreapNode {
     int Key;
